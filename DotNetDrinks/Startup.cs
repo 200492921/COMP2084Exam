@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.OpenApi.Models;
 
 namespace DotNetDrinks
 {
@@ -39,7 +40,10 @@ namespace DotNetDrinks
             services.AddSession();
 
             services.AddControllersWithViews();
-
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Categories API", Version = "v1" });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -49,6 +53,13 @@ namespace DotNetDrinks
             {
                 app.UseDeveloperExceptionPage();
                 app.UseMigrationsEndPoint();
+                
+                app.UseSwagger();
+                app.UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Categories API V1");
+                    c.RoutePrefix = "docs";  // Set the Swagger UI at the app's root
+                });
             }
             else
             {
