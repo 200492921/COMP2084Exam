@@ -19,7 +19,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Price)
             </th>
-            <th></th>
+            <th>
+                Total Price
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -34,7 +36,14 @@
                     </a>
                 </td>
                 <td>
-                    @* ADD IMG HERE *@
+                    @if (String.IsNullOrEmpty(item.Product.Image))
+                    {
+                        <img src="~/img/products/drinks-placeholder.png" alt="Product Image" class="img-thumbnail" />
+                    }
+                    else
+                    {
+                        <img src="~/img/products/@item.Product.Image" alt="Product Image" class="img-thumbnail" />
+                    }
                 </td>
                 @* As a general rule, numbers are right-aligned when shown in a table *@
                 <td class="text-right">
@@ -42,8 +51,11 @@
                 </td>
                 <td class="text-right">
                     @* use generic C format provider to format decimal to currency *@
-                    @item.Price.ToString("C")
+                    @item.Product.Price.ToString("C")
                 </td>
+                <td class="text-right">
+                    @* use generic C format provider to format decimal to currency *@
+                    @item.Price.ToString("C")
                 <td>
                     @* asp-controller by default is the same as the folder where view is *@
                     <a asp-action="RemoveFromCart" asp-route-id="@item.Id">Delete</a>
@@ -51,7 +63,7 @@
             </tr>
         }
         <tr>
-            <td colspan="4" class="text-right">@ViewBag.TotalAmount</td>
+            <td colspan="5" class="text-right">@ViewBag.TotalAmount</td>
             <td>
                 <a class="btn btn-primary" asp-action="Index">Continue Shopping</a>
                 <a class="btn btn-success" asp-action="Checkout">Checkout</a>
